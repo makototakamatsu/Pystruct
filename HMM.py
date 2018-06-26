@@ -15,3 +15,14 @@ unaries=np.array([abs(i-j) for j in range(nClasses)] for i in d)
 
 #ペアワイズ項について、同じラベルなら0、異なるラベルの場合p
 pairwise=np.array((np.ma.ones((nClasses,nClasses))-np.eye(nClasses))*p)
+
+#ノードを連結するエッジの設定
+edges=np.array([ [i,i+1] for i in range(unaries.shape[0]-1) ])
+
+#推論時間関数が最大化するので、unaryiesとpairwiseにマイナスをつける
+res=inference_dispatch(-unaries,-pairwise,edges,inference_method='max-product')
+
+#プロット
+plt.plot(d,label="data")
+plt.plot(res,label="result")
+plt.legend()
